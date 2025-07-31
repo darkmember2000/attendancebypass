@@ -327,6 +327,14 @@
       const newLink = input.replace(/(\d{4})(?=_\d+)/, "2252");
       window.open(newLink, '_blank');
     }
+
+        //disbale not fill link box
+        function checkInput() {
+    const input = document.getElementById("linkInput").value.trim();
+    const btn = document.getElementById("bypassBtn");
+    btn.disabled = input === "";
+  }
+        
         // Create floating particles
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
