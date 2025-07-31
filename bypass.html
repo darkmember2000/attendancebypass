@@ -5,18 +5,289 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Attendance Bypass</title>
   <style>
-    /* All your existing styles are here (unchanged) */
-    /* ...[SHORTENED for brevity - identical to your code above]... */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    /* Keep everything same as your current CSS */
-    /* You already have animations, particles, styling, etc. */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(0, 212, 255, 0.3);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+      box-shadow: 0 0 6px rgba(0, 212, 255, 0.5);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-title {
+      font-size: 3.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 0 0 30px #00d4ff, 0 0 60px #0099cc, 0 0 90px #0066cc;
+      animation: neonGlow 2s ease-in-out infinite alternate;
+      letter-spacing: 2px;
+      color: #00f0ff;
+    }
+
+    @keyframes neonGlow {
+      from { 
+        text-shadow: 0 0 20px #00d4ff, 0 0 40px #0099cc, 0 0 60px #0066cc;
+        color: #00d4ff;
+      }
+      to { 
+        text-shadow: 0 0 40px #00f0ff, 0 0 80px #00d4ff, 0 0 120px #0099cc;
+        color: #00f0ff;
+      }
+    }
+
+    .time-display {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      opacity: 0.9;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .timezone {
+      font-size: 1rem;
+      opacity: 0.7;
+      margin-bottom: 40px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 1; }
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .bypass-container {
+      background: rgba(0, 212, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 50px 40px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 212, 255, 0.3);
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      animation: containerFloat 4s ease-in-out infinite;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    @keyframes containerFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .input-group {
+      margin-bottom: 30px;
+    }
+
+    .link-input {
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #00f0ff;
+      outline: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      border: 2px solid rgba(0, 212, 255, 0.3);
+    }
+
+    .link-input::placeholder {
+      color: rgba(0, 212, 255, 0.7);
+    }
+
+    .link-input:focus {
+      background: rgba(0, 0, 0, 0.8);
+      border-color: #00d4ff;
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.6), inset 0 0 10px rgba(0, 212, 255, 0.2);
+      transform: scale(1.02);
+    }
+
+    .bypass-btn {
+      background: linear-gradient(45deg, #001a33, #003366);
+      border: none;
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #00f0ff;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 212, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #00d4ff;
+    }
+
+    .bypass-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.4), transparent);
+      transition: left 0.5s;
+    }
+
+    .bypass-btn:hover::before {
+      left: 100%;
+    }
+
+    .bypass-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 212, 255, 0.8), 0 0 50px rgba(0, 212, 255, 0.5);
+      background: linear-gradient(45deg, #003366, #0066cc);
+      text-shadow: 0 0 10px #00f0ff;
+    }
+
+    .bypass-btn:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    .glow-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: orbFloat 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .orb1 {
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.3), transparent);
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .orb2 {
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(0, 150, 255, 0.2), transparent);
+      top: 60%;
+      right: 15%;
+      animation-delay: 2s;
+    }
+
+    .orb3 {
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, rgba(0, 100, 255, 0.3), transparent);
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 4s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(20px, -30px) scale(1.1); }
+      50% { transform: translate(-15px, -50px) scale(0.9); }
+      75% { transform: translate(30px, -20px) scale(1.05); }
+    }
+
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 2.5rem;
+      }
+
+      .bypass-container {
+        padding: 30px 20px;
+        margin: 0 10px;
+      }
+
+      .link-input {
+        font-size: 1rem;
+        padding: 12px 15px;
+      }
+
+      .bypass-btn {
+        padding: 15px 30px;
+        font-size: 1.1rem;
+      }
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 15px 0;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(0, 212, 255, 0.3);
+      z-index: 3;
+    }
+
+    .footer-text {
+      color: #00d4ff;
+      font-size: 1rem;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+      animation: footerGlow 3s ease-in-out infinite alternate;
+      letter-spacing: 1px;
+    }
+
+    @keyframes footerGlow {
+      from {
+        text-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+        color: #00d4ff;
+      }
+      to {
+        text-shadow: 0 0 20px rgba(0, 212, 255, 1), 0 0 30px rgba(0, 150, 255, 0.8);
+        color: #00f0ff;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Animated background particles -->
   <div class="particles" id="particles"></div>
-
-  <!-- Glowing orbs -->
   <div class="glow-orb orb1"></div>
   <div class="glow-orb orb2"></div>
   <div class="glow-orb orb3"></div>
@@ -30,22 +301,13 @@
   <main class="main-content">
     <div class="bypass-container">
       <div class="input-group">
-        <input
-          type="url"
-          class="link-input"
-          placeholder="Enter attendance link here..."
-          id="linkInput"
-        >
+        <input type="url" class="link-input" placeholder="Enter attendance link here..." id="linkInput">
       </div>
-      <button class="bypass-btn" onclick="handleBypass()">
-        BYPASS
-      </button>
+      <button class="bypass-btn" onclick="handleBypass()">BYPASS</button>
     </div>
   </main>
 
-  <!-- Script section with auto-paste functionality -->
   <script>
-    // Create floating particles
     function createParticles() {
       const particlesContainer = document.getElementById('particles');
       for (let i = 0; i < 20; i++) {
@@ -61,42 +323,28 @@
       }
     }
 
-    // Update Sri Lanka time
     function updateTime() {
       const now = new Date();
       const sriLankaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Colombo" }));
-
       const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
       };
-
-      const timeString = sriLankaTime.toLocaleDateString('en-US', options);
-      document.getElementById('currentTime').textContent = timeString;
+      document.getElementById('currentTime').textContent = sriLankaTime.toLocaleDateString('en-US', options);
     }
 
-    // Handle bypass button click
     function handleBypass() {
       const linkInput = document.getElementById('linkInput');
       const link = linkInput.value.trim();
-
       if (!link) {
         alert('Please enter a link first!');
         linkInput.focus();
         return;
       }
-
       const btn = document.querySelector('.bypass-btn');
       const originalText = btn.textContent;
       btn.textContent = 'PROCESSING...';
       btn.style.background = 'linear-gradient(45deg, #4CAF50, #45a049)';
-
       setTimeout(() => {
         btn.textContent = 'SUCCESS!';
         setTimeout(() => {
@@ -107,7 +355,6 @@
       }, 2000);
     }
 
-    // Auto-paste clipboard content
     async function autoPasteClipboard() {
       const input = document.getElementById('linkInput');
       try {
@@ -119,34 +366,27 @@
           }
         }
       } catch (err) {
-        console.warn('Clipboard access denied or not supported:', err);
+        console.warn('Clipboard read error:', err);
       }
     }
 
-    // Initialize features
     createParticles();
     updateTime();
     setInterval(updateTime, 1000);
 
-    // Enter key support
     document.getElementById('linkInput').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        handleBypass();
-      }
+      if (e.key === 'Enter') handleBypass();
     });
 
-    // Try clipboard paste on page visible
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible") {
         autoPasteClipboard();
       }
     });
 
-    // Also try once when page loads
     window.addEventListener('load', autoPasteClipboard);
   </script>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="footer-text">Developed By DARK MEMBER</div>
   </footer>
