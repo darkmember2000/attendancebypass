@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Bypass - NSBM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a2e 0%, #16213e 50%, #1a1a3a 100%);
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Professional background overlay */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 191, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(102, 204, 255, 0.12) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Technology Grid Background - Optimized */
+        .tech-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 191, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 191, 255, 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 25s linear infinite;
+            z-index: -2;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Simplified Circuit Lines */
+        .circuit-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            overflow: hidden;
+        }
+
+        .circuit-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.4), transparent);
+            height: 2px;
+            width: 100px;
+            border-radius: 1px;
+            animation: circuitFlow 12s linear infinite;
+        }
+
+        @keyframes circuitFlow {
+            0% { transform: translateX(-100px); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateX(calc(100vw + 100px)); opacity: 0; }
+        }
+
+        /* Optimized Floating Particles */
+        .tech-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -4;
+            pointer-events: none;
+        }
+
+        .tech-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00bfff;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: particleFloat 20s linear infinite;
+            box-shadow: 0 0 6px rgba(0, 191, 255, 0.6);
+        }
+
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0; 
+            }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { 
+                transform: translateY(-50px) translateX(50px);
+                opacity: 0; 
+            }
+        }
+
+        /* Performance-optimized pulse effect */
+        .pulse-rings {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            z-index: -5;
+            pointer-events: none;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            top: -25px;
+            left: -25px;
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            border-radius: 50%;
+            animation: pulseExpand 8s ease-out infinite;
+        }
+
+        @keyframes pulseExpand {
+            0% {
+                transform: scale(0);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+
+        /* Simplified scanning line */
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.6), transparent);
+            animation: scanMove 6s ease-in-out infinite;
+            z-index: -6;
+        }
+
+        @keyframes scanMove {
+            0%, 100% { 
+                transform: translateY(0); 
+                opacity: 0; 
+            }
+            50% { 
+                transform: translateY(100vh); 
+                opacity: 1; 
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: #00bfff;
+            margin-bottom: 15px;
+            letter-spacing: -0.02em;
+            text-shadow: 
+                0 0 10px #00bfff,
+                0 0 20px #00bfff,
+                0 0 30px #00bfff,
+                0 4px 6px rgba(0, 0, 0, 0.3);
+            animation: neonPulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonPulse {
+            from { 
+                text-shadow: 
+                    0 0 10px #00bfff,
+                    0 0 20px #00bfff,
+                    0 0 30px #00bfff,
+                    0 4px 6px rgba(0, 0, 0, 0.3);
+            }
+            to { 
+                text-shadow: 
+                    0 0 20px #00bfff,
+                    0 0 30px #00bfff,
+                    0 0 40px #00bfff,
+                    0 4px 6px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: #66ccff;
+            margin-bottom: 25px;
+            font-weight: 500;
+            text-shadow: 0 0 5px #66ccff;
+        }
+
+        .datetime {
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            color: #4da6ff;
+            background: rgba(0, 191, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.6;
+            text-shadow: 0 0 8px rgba(77, 166, 255, 0.6);
+            box-shadow: 
+                0 0 15px rgba(0, 191, 255, 0.2),
+                inset 0 0 15px rgba(0, 191, 255, 0.1);
+        }
+
+        .date-line {
+            display: block;
+            font-size: 1em;
+            margin-bottom: 2px;
+        }
+
+        .time-line {
+            display: block;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 
+                0 0 25px rgba(0, 191, 255, 0.3),
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(0, 191, 255, 0.2);
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid rgba(0, 191, 255, 0.4);
+        }
+
+        .input-container {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-label {
+            display: block;
+            color: #66ccff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 5px rgba(102, 204, 255, 0.5);
+        }
+
+        .link-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(0, 191, 255, 0.4);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 10px rgba(0, 191, 255, 0.2),
+                inset 0 0 10px rgba(0, 191, 255, 0.05);
+        }
+
+        .link-input:focus {
+            border-color: #00bfff;
+            box-shadow: 
+                0 0 20px rgba(0, 191, 255, 0.4),
+                0 0 5px rgba(0, 191, 255, 0.6),
+                inset 0 0 15px rgba(0, 191, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .link-input::placeholder {
+            color: rgba(102, 204, 255, 0.6);
+        }
+
+        .bypass-btn {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            font-weight: 600;
+            background: linear-gradient(135deg, #0080ff 0%, #00bfff 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 20px rgba(0, 191, 255, 0.4),
+                0 4px 15px rgba(0, 128, 255, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .bypass-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 0 30px rgba(0, 191, 255, 0.6),
+                0 8px 25px rgba(0, 128, 255, 0.4),
+                0 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .bypass-btn:active {
+            transform: translateY(0);
+        }
+
+        .bypass-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .bypass-btn:hover::before {
+            left: 100%;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 15px;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            font-weight: 500;
+            display: none;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-left: 4px solid #ff6b6b;
+            animation: slideIn 0.3s ease-out;
+            text-shadow: 0 0 5px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.2);
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(-10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Success feedback */
+        .success-message {
+            color: #4ecdc4;
+            text-align: center;
+            margin-top: 15px;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            font-weight: 500;
+            display: none;
+            background: rgba(78, 205, 196, 0.1);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-left: 4px solid #4ecdc4;
+            animation: slideIn 0.3s ease-out;
+            text-shadow: 0 0 5px rgba(78, 205, 196, 0.4);
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.2);
+        }
+
+        /* Developer credit */
+        .developer-credit {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #66ccff;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            font-weight: 500;
+            z-index: 100;
+            background: rgba(0, 191, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 10px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            transition: all 0.3s ease;
+            text-shadow: 0 0 8px rgba(102, 204, 255, 0.6);
+            box-shadow: 
+                0 0 15px rgba(0, 191, 255, 0.2),
+                inset 0 0 10px rgba(0, 191, 255, 0.1);
+        }
+
+        .developer-credit:hover {
+            color: #00bfff;
+            background: rgba(0, 191, 255, 0.15);
+            text-shadow: 0 0 12px rgba(0, 191, 255, 0.8);
+            box-shadow: 
+                0 0 25px rgba(0, 191, 255, 0.3),
+                inset 0 0 15px rgba(0, 191, 255, 0.15);
+        }
+
+        /* Status indicator */
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4ecdc4;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: neonPulseIndicator 2s infinite;
+            box-shadow: 0 0 10px #4ecdc4;
+        }
+
+        @keyframes neonPulseIndicator {
+            0%, 100% { 
+                opacity: 1; 
+                box-shadow: 0 0 10px #4ecdc4;
+            }
+            50% { 
+                opacity: 0.3; 
+                box-shadow: 0 0 20px #4ecdc4;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .main-content {
+                padding: 30px 25px;
+                margin: 0 10px;
+            }
+            
+            .header {
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 25px 20px;
+            }
+            
+            .link-input, .bypass-btn {
+                padding: 14px 16px;
+            }
+
+            .developer-credit {
+                bottom: 15px;
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #ffffff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Smooth transitions */
+        * {
+            transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="tech-grid"></div>
+    <div class="circuit-lines" id="circuitLines"></div>
+    <div class="tech-particles" id="techParticles"></div>
+    <div class="dna-strands" id="dnaStrands"></div>
+    <div class="binary-rain" id="binaryRain"></div>
+    <div class="floating-orbs" id="floatingOrbs"></div>
+    <div class="energy-waves" id="energyWaves"></div>
+    <div class="data-stream" id="dataStream"></div>
+    <div class="pulse-rings" id="pulseRings"></div>
+    <div class="scan-line"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Attendance Bypass</h1>
+            <p class="subtitle">Only for NSBM Students</p>
+            <div class="datetime" id="datetime">
+                <span class="status-indicator"></span>
+                <span class="date-line" id="dateLine"></span>
+                <span class="time-line" id="timeLine"></span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="input-container">
+                <label class="input-label" for="linkInput">Attendance Link</label>
+                <input 
+                    type="url" 
+                    id="linkInput" 
+                    class="link-input" 
+                    placeholder="Paste your attendance link here..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </div>
+            
+            <button class="bypass-btn" id="bypassBtn" onclick="bypassLink()">
+                Process Link
+            </button>
+            
+            <div class="error-message" id="errorMessage">
+                ⚠️ Please enter a valid attendance link
+            </div>
+
+            <div class="success-message" id="successMessage">
+                ✅ Link processed successfully! Opening in new tab...
+            </div>
+        </div>
+    </div>
+
+    <!-- Developer Credit -->
+    <div class="developer-credit">
+        Developed By Dark Member
+    </div>
+
+    <script>
+        // Update date and time for Sri Lanka
+        function updateDateTime() {
+            const now = new Date();
+            const dateOptions = {
+                timeZone: 'Asia/Colombo',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            };
+            const timeOptions = {
+                timeZone: 'Asia/Colombo',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(now);
+            const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(now) + ' (Sri Lanka)';
+            
+            document.getElementById('dateLine').textContent = formattedDate;
+            document.getElementById('timeLine').textContent = formattedTime;
+        }
+
+        // Auto-paste from clipboard with validation
+        async function autoPaste() {
+            try {
+                const text = await navigator.clipboard.readText();
+                const linkInput = document.getElementById('linkInput');
+                if (text && text.includes('http') && linkInput.value === '') {
+                    linkInput.value = text;
+                    linkInput.style.borderColor = '#00bfff';
+                    linkInput.style.backgroundColor = 'rgba(0, 191, 255, 0.1)';
+                    linkInput.style.boxShadow = '0 0 15px rgba(0, 191, 255, 0.4)';
+                    
+                    // Show brief success feedback
+                    setTimeout(() => {
+                        linkInput.style.borderColor = 'rgba(0, 191, 255, 0.4)';
+                        linkInput.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+                        linkInput.style.boxShadow = '0 0 10px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(0, 191, 255, 0.05)';
+                    }, 2000);
+                }
+            } catch (err) {
+                // Clipboard access denied or not available - silent fail
+            }
+        }
+
+        // Enhanced bypass function with better UX
+        function bypassLink() {
+            const input = document.getElementById("linkInput").value.trim();
+            const errorMessage = document.getElementById("errorMessage");
+            const successMessage = document.getElementById("successMessage");
+            const bypassBtn = document.getElementById("bypassBtn");
+            
+            // Hide any previous messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Validate input
+            if (!input) {
+                showError("Please enter an attendance link");
+                return;
+            }
+            
+            if (!input.includes('http')) {
+                showError("Please enter a valid URL");
+                return;
+            }
+            
+            // Show loading state
+            bypassBtn.classList.add('loading');
+            bypassBtn.disabled = true;
+            
+            // Simulate processing time for better UX
+            setTimeout(() => {
+                try {
+                    // Perform bypass
+                    const newLink = input.replace(/(\d{4})(?=_\d+)/, "2252");
+                    
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    
+                    // Open the link
+                    window.open(newLink, '_blank');
+                    
+                    // Clear input after successful bypass
+                    setTimeout(() => {
+                        document.getElementById("linkInput").value = '';
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                    
+                } catch (error) {
+                    showError("An error occurred while processing the link");
+                } finally {
+                    // Remove loading state
+                    bypassBtn.classList.remove('loading');
+                    bypassBtn.disabled = false;
+                }
+            }, 800);
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById("errorMessage");
+            errorMessage.textContent = "⚠️ " + message;
+            errorMessage.style.display = 'block';
+            
+            // Auto-hide error after 4 seconds
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 4000);
+        }
+
+        // Enhanced keyboard support
+        document.getElementById('linkInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                bypassLink();
+            }
+        });
+
+        // Input validation feedback
+        document.getElementById('linkInput').addEventListener('input', function(e) {
+            const input = e.target;
+            const errorMessage = document.getElementById("errorMessage");
+            
+            if (input.value && !input.value.includes('http')) {
+                input.style.borderColor = '#ff6b6b';
+                input.style.boxShadow = '0 0 10px rgba(255, 107, 107, 0.3)';
+            } else {
+                input.style.borderColor = 'rgba(0, 191, 255, 0.4)';
+                input.style.boxShadow = '0 0 10px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(0, 191, 255, 0.05)';
+                errorMessage.style.display = 'none';
+            }
+        });
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Initialize enhanced tech animations
+            createOptimizedTechAnimations();
+            
+            // Auto-paste functionality
+            autoPaste();
+            window.addEventListener('focus', autoPaste);
+            
+            // Periodically check for clipboard content
+            setInterval(autoPaste, 3000);
+            
+            // Add smooth loading animation
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // Add interactive effects
+            addInteractiveEffects();
+        });
+
+        // Interactive effects
+        function addInteractiveEffects() {
+            const mainContent = document.querySelector('.main-content');
+            const title = document.querySelector('.title');
+            
+            // Hover effect on main content
+            mainContent.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.boxShadow = '0 0 40px rgba(0, 191, 255, 0.4), 0 30px 60px rgba(0, 0, 0, 0.4)';
+            });
+            
+            mainContent.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = '0 0 25px rgba(0, 191, 255, 0.3), 0 20px 40px rgba(0, 0, 0, 0.3)';
+            });
+            
+            // Click effect on title
+            title.addEventListener('click', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'neonPulse 2s ease-in-out infinite alternate';
+                }, 100);
+            });
+        }
+
+        // Service worker registration for better performance (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // Could register service worker here for offline functionality
+            });
+        }
+    </script>
+</body>
+</html>
