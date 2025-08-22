@@ -194,31 +194,98 @@
         .title {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 700;
-            color: #00bfff;
             margin-bottom: 15px;
-            letter-spacing: -0.00em;
-            text-shadow: 
-                0 0 10px #00bfff,
-                0 0 20px #00bfff,
-                0 0 30px #00bfff,
-                0 4px 6px rgba(0, 0, 0, 0.3);
-            animation: neonPulse 2s ease-in-out infinite alternate;
+            letter-spacing: -0.02em;
+            background: linear-gradient(
+                45deg,
+                #ff3333,     /* Red */
+                #19589d,     /* Dark Blue */
+                #39b54a,     /* Bright Green */
+                #8dc63f,     /* Lime Green */
+                #9dcc50,     /* Light Green */
+                #3dc4e3,     /* Cyan Blue */
+                #318faf,     /* Teal Blue */
+                #3fc6ee      /* Sky Blue */
+            );
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            position: relative;
+            animation: gradientShift 3s ease-in-out infinite, neonPulse 2s ease-in-out infinite alternate;
+        }
+
+        .title::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(
+                45deg,
+                #ff3333,     /* Red */
+                #19589d,     /* Dark Blue */
+                #39b54a,     /* Bright Green */
+                #8dc63f,     /* Lime Green */
+                #9dcc50,     /* Light Green */
+                #3dc4e3,     /* Cyan Blue */
+                #318faf,     /* Teal Blue */
+                #3fc6ee      /* Sky Blue */
+            );
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: blur(10px);
+            opacity: 0.7;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        .title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -2;
+            background: linear-gradient(
+                45deg,
+                #ff3333,     /* Red */
+                #19589d,     /* Dark Blue */
+                #39b54a,     /* Bright Green */
+                #8dc63f,     /* Lime Green */
+                #9dcc50,     /* Light Green */
+                #3dc4e3,     /* Cyan Blue */
+                #318faf,     /* Teal Blue */
+                #3fc6ee      /* Sky Blue */
+            );
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: blur(20px);
+            opacity: 0.5;
+            animation: gradientShift 3s ease-in-out infinite reverse;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         @keyframes neonPulse {
             from { 
-                text-shadow: 
-                    0 0 10px #00bfff,
-                    0 0 20px #00bfff,
-                    0 0 30px #00bfff,
-                    0 4px 6px rgba(0, 0, 0, 0.3);
+                filter: brightness(1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
             }
             to { 
-                text-shadow: 
-                    0 0 20px #00bfff,
-                    0 0 30px #00bfff,
-                    0 0 40px #00bfff,
-                    0 4px 6px rgba(0, 0, 0, 0.3);
+                filter: brightness(1.3) drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
             }
         }
 
@@ -556,6 +623,7 @@
 
         <div class="main-content">
             <div class="input-container">
+                <label class="input-label" for="linkInput">Attendance Link</label>
                 <input 
                     type="url" 
                     id="linkInput" 
@@ -567,7 +635,7 @@
             </div>
             
             <button class="bypass-btn" id="bypassBtn" onclick="bypassLink()">
-                Bypass Link
+                Process Link
             </button>
             
             <div class="error-message" id="errorMessage">
@@ -575,201 +643,208 @@
             </div>
 
             <div class="success-message" id="successMessage">
-                ✅ Link bypass successfully! 
+                ✅ Link processed successfully! Opening in new tab...
             </div>
         </div>
     </div>
 
     <!-- Developer Credit -->
     <div class="developer-credit">
-        Developed By Dark Member
+        Powered By Dark Member
     </div>
-<script>
-    function checkdevelop(input) {
-        if (input === "35013") {
-            alert("This site Developed By Manoj Senevirathna");
-        }
-    }
-    // Update date and time for Sri Lanka
-    function updateDateTime() {
-        const now = new Date();
-        const dateOptions = {
-            timeZone: 'Asia/Colombo',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            weekday: 'long'
-        };
-        const timeOptions = {
-            timeZone: 'Asia/Colombo',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        };
-        
-        const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(now);
-        const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(now) + ' (Sri Lanka)';
-        
-        document.getElementById('dateLine').textContent = formattedDate;
-        document.getElementById('timeLine').textContent = formattedTime;
-    }
 
-    // Auto-paste from clipboard with validation
-    async function autoPaste() {
-        try {
-            const text = await navigator.clipboard.readText();
-            const linkInput = document.getElementById('linkInput');
-            if (text && text.includes('http') && linkInput.value === '') {
-                linkInput.value = text;
-                linkInput.style.borderColor = '#00bfff';
-                linkInput.style.backgroundColor = 'rgba(0, 191, 255, 0.1)';
-                linkInput.style.boxShadow = '0 0 15px rgba(0, 191, 255, 0.4)';
-                
-                setTimeout(() => {
-                    linkInput.style.borderColor = 'rgba(0, 191, 255, 0.4)';
-                    linkInput.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-                    linkInput.style.boxShadow = '0 0 10px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(0, 191, 255, 0.05)';
-                }, 2000);
-            }
-        } catch (err) {
-            // Clipboard access denied or not available
+    <script>
+        // Update date and time for Sri Lanka
+        function updateDateTime() {
+            const now = new Date();
+            const dateOptions = {
+                timeZone: 'Asia/Colombo',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            };
+            const timeOptions = {
+                timeZone: 'Asia/Colombo',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(now);
+            const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(now) + ' (Sri Lanka)';
+            
+            document.getElementById('dateLine').textContent = formattedDate;
+            document.getElementById('timeLine').textContent = formattedTime;
         }
-    }
 
-    // Secret code check
-    function checkSecretCode(input) {
-        if (input === "35013") {
-            alert("This site Developed By Manoj Senevirathna");
-        }
-    }
-
-    // Enhanced bypass function with better UX
-    function bypassLink() {
-        const input = document.getElementById("linkInput").value.trim();
-        const errorMessage = document.getElementById("errorMessage");
-        const successMessage = document.getElementById("successMessage");
-        const bypassBtn = document.getElementById("bypassBtn");
-
-        // 🔑 Secret code check
-        checkSecretCode(input);
-        
-        errorMessage.style.display = 'none';
-        successMessage.style.display = 'none';
-        
-        if (!input) {
-            showError("Please enter an attendance link");
-            return;
-        }
-        
-        if (!input.includes('http')) {
-            showError("Please enter a valid URL");
-            return;
-        }
-        
-        bypassBtn.classList.add('loading');
-        bypassBtn.disabled = true;
-        
-        setTimeout(() => {
+        // Auto-paste from clipboard with validation
+        async function autoPaste() {
             try {
-                const newLink = input.replace(/(\d{4})(?=_\d+)/, "2252");
-                successMessage.style.display = 'block';
-                window.open(newLink, '_blank');
-                
-                setTimeout(() => {
-                    document.getElementById("linkInput").value = '';
-                    successMessage.style.display = 'none';
-                }, 3000);
-                
-            } catch (error) {
-                showError("An error occurred while processing the link");
-            } finally {
-                bypassBtn.classList.remove('loading');
-                bypassBtn.disabled = false;
+                const text = await navigator.clipboard.readText();
+                const linkInput = document.getElementById('linkInput');
+                if (text && text.includes('http') && linkInput.value === '') {
+                    linkInput.value = text;
+                    linkInput.style.borderColor = '#00bfff';
+                    linkInput.style.backgroundColor = 'rgba(0, 191, 255, 0.1)';
+                    linkInput.style.boxShadow = '0 0 15px rgba(0, 191, 255, 0.4)';
+                    
+                    // Show brief success feedback
+                    setTimeout(() => {
+                        linkInput.style.borderColor = 'rgba(0, 191, 255, 0.4)';
+                        linkInput.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+                        linkInput.style.boxShadow = '0 0 10px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(0, 191, 255, 0.05)';
+                    }, 2000);
+                }
+            } catch (err) {
+                // Clipboard access denied or not available - silent fail
             }
-        }, 800);
-    }
-
-    function showError(message) {
-        const errorMessage = document.getElementById("errorMessage");
-        errorMessage.textContent = "⚠️ " + message;
-        errorMessage.style.display = 'block';
-        
-        setTimeout(() => {
-            errorMessage.style.display = 'none';
-        }, 4000);
-    }
-
-    // Enhanced keyboard support
-    document.getElementById('linkInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            bypassLink();
         }
-    });
 
-    // Input validation feedback
-    document.getElementById('linkInput').addEventListener('input', function(e) {
-        const input = e.target;
-        const errorMessage = document.getElementById("errorMessage");
-
-        if (input.value && !input.value.includes('http')) {
-            input.style.borderColor = '#ff6b6b';
-            input.style.boxShadow = '0 0 10px rgba(255, 107, 107, 0.3)';
-        } else {
-            input.style.borderColor = 'rgba(0, 191, 255, 0.4)';
-            input.style.boxShadow = '0 0 10px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(0, 191, 255, 0.05)';
+        // Enhanced bypass function with better UX
+        function bypassLink() {
+            const input = document.getElementById("linkInput").value.trim();
+            const errorMessage = document.getElementById("errorMessage");
+            const successMessage = document.getElementById("successMessage");
+            const bypassBtn = document.getElementById("bypassBtn");
+            
+            // Hide any previous messages
             errorMessage.style.display = 'none';
-        }
-    });
-
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', function() {
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-
-        createOptimizedTechAnimations();
-
-        autoPaste();
-        window.addEventListener('focus', autoPaste);
-        setInterval(autoPaste, 3000);
-
-        document.body.style.opacity = '0';
-        setTimeout(() => {
-            document.body.style.transition = 'opacity 0.5s ease';
-            document.body.style.opacity = '1';
-        }, 100);
-
-        addInteractiveEffects();
-    });
-
-    // Interactive effects
-    function addInteractiveEffects() {
-        const mainContent = document.querySelector('.main-content');
-        const title = document.querySelector('.title');
-        
-        mainContent.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.02)';
-            this.style.boxShadow = '0 0 40px rgba(0, 191, 255, 0.4), 0 30px 60px rgba(0, 0, 0, 0.4)';
-        });
-        
-        mainContent.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-            this.style.boxShadow = '0 0 25px rgba(0, 191, 255, 0.3), 0 20px 40px rgba(0, 0, 0, 0.3)';
-        });
-        
-        title.addEventListener('click', function() {
-            this.style.animation = 'none';
+            successMessage.style.display = 'none';
+            
+            // Validate input
+            if (!input) {
+                showError("Please enter an attendance link");
+                return;
+            }
+            
+            if (!input.includes('http')) {
+                showError("Please enter a valid URL");
+                return;
+            }
+            
+            // Show loading state
+            bypassBtn.classList.add('loading');
+            bypassBtn.disabled = true;
+            
+            // Simulate processing time for better UX
             setTimeout(() => {
-                this.style.animation = 'neonPulse 2s ease-in-out infinite alternate';
-            }, 100);
-        });
-    }
+                try {
+                    // Perform bypass
+                    const newLink = input.replace(/(\d{4})(?=_\d+)/, "2252");
+                    
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    
+                    // Open the link
+                    window.open(newLink, '_blank');
+                    
+                    // Clear input after successful bypass
+                    setTimeout(() => {
+                        document.getElementById("linkInput").value = '';
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                    
+                } catch (error) {
+                    showError("An error occurred while processing the link");
+                } finally {
+                    // Remove loading state
+                    bypassBtn.classList.remove('loading');
+                    bypassBtn.disabled = false;
+                }
+            }, 800);
+        }
 
-    // Service worker registration for better performance (optional)
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            // Could register service worker here for offline functionality
+        function showError(message) {
+            const errorMessage = document.getElementById("errorMessage");
+            errorMessage.textContent = "⚠️ " + message;
+            errorMessage.style.display = 'block';
+            
+            // Auto-hide error after 4 seconds
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 4000);
+        }
+
+        // Enhanced keyboard support
+        document.getElementById('linkInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                bypassLink();
+            }
         });
-    }
-</script>
+
+        // Input validation feedback
+        document.getElementById('linkInput').addEventListener('input', function(e) {
+            const input = e.target;
+            const errorMessage = document.getElementById("errorMessage");
+            
+            if (input.value && !input.value.includes('http')) {
+                input.style.borderColor = '#ff6b6b';
+                input.style.boxShadow = '0 0 10px rgba(255, 107, 107, 0.3)';
+            } else {
+                input.style.borderColor = 'rgba(0, 191, 255, 0.4)';
+                input.style.boxShadow = '0 0 10px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(0, 191, 255, 0.05)';
+                errorMessage.style.display = 'none';
+            }
+        });
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Initialize enhanced tech animations
+            createOptimizedTechAnimations();
+            
+            // Auto-paste functionality
+            autoPaste();
+            window.addEventListener('focus', autoPaste);
+            
+            // Periodically check for clipboard content
+            setInterval(autoPaste, 3000);
+            
+            // Add smooth loading animation
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // Add interactive effects
+            addInteractiveEffects();
+        });
+
+        // Interactive effects
+        function addInteractiveEffects() {
+            const mainContent = document.querySelector('.main-content');
+            const title = document.querySelector('.title');
+            
+            // Hover effect on main content
+            mainContent.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.boxShadow = '0 0 40px rgba(0, 191, 255, 0.4), 0 30px 60px rgba(0, 0, 0, 0.4)';
+            });
+            
+            mainContent.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = '0 0 25px rgba(0, 191, 255, 0.3), 0 20px 40px rgba(0, 0, 0, 0.3)';
+            });
+            
+            // Click effect on title
+            title.addEventListener('click', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'neonPulse 2s ease-in-out infinite alternate';
+                }, 100);
+            });
+        }
+
+        // Service worker registration for better performance (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // Could register service worker here for offline functionality
+            });
+        }
+    </script>
 </body>
 </html>
