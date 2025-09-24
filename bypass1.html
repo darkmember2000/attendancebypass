@@ -760,28 +760,6 @@
             }
         }
 
-        // Auto-paste from clipboard with validation
-        async function autoPaste() {
-            try {
-                const text = await navigator.clipboard.readText();
-                const linkInput1 = document.getElementById('linkInput1');
-                const linkInput2 = document.getElementById('linkInput2');
-                
-                if (text && text.includes('http')) {
-                    // If first input is empty, paste there, otherwise paste to second input
-                    if (linkInput1.value === '') {
-                        linkInput1.value = text;
-                        applyPasteEffect(linkInput1);
-                    } else if (linkInput2.value === '') {
-                        linkInput2.value = text;
-                        applyPasteEffect(linkInput2);
-                    }
-                }
-            } catch (err) {
-                // Clipboard access denied or not available - silent fail
-            }
-        }
-
         function applyPasteEffect(input) {
             input.style.borderColor = '#00bfff';
             input.style.backgroundColor = 'rgba(0, 191, 255, 0.1)';
