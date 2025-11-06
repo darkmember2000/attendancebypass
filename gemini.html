@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Bypass Tool</title>
+    <style>
+        /* Basic Styling for better appearance */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .description {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-left: 5px solid #007bff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔗 URL Modifier Tool</h1>
+        <div class="description">
+            <p>Enter a URL. Clicking **Bypass** will replace the **4 digits before the underscore** with a specific number.</p>
+            <p>Example: <code>.../id=**5060**_65421</code> will change to <code>.../id=**2252**_65421</code> or <code>.../id=**2256**_65421</code>.</p>
+        </div>
+
+        <h3>Input 1: Replace with 2252</h3>
+        <div class="input-group">
+            <input type="text" id="linkInput1" placeholder="Paste your link here (e.g., https://...id=5060_65421)">
+            <button onclick="handleBypass1()">Bypass</button>
+        </div>
+
+        <h3>Input 2: Replace with 2256</h3>
+        <div class="input-group">
+            <input type="text" id="linkInput2" placeholder="Paste your link here (e.g., https://...id=5060_65421)">
+            <button onclick="handleBypass2()">Bypass</button>
+        </div>
+
+        <p style="text-align: center; color: #6c757d;">Modified link appears in the text box after clicking Bypass.</p>
+
+    </div>
+
+    <script>
+        // Core function to find the pattern and replace the digits
+        function modifyLink(originalLink, newDigits) {
+            // Regex: Find exactly 4 digits (\d{4}) followed by an underscore (_)
+            const regex = /\d{4}_/; 
+            
+            // Check if the pattern is found (optional, but good practice)
+            if (regex.test(originalLink)) {
+                // Replace the found "XXXX_" with the new digits and an underscore
+                return originalLink.replace(regex, newDigits + '_');
+            } else {
+                // Alert the user if the pattern is not found
+                alert("Error: The link doesn't contain the expected pattern (4 digits followed by an underscore).");
+                return originalLink; 
+            }
+        }
+
+        // --- Handler for Input Box 1 (Replace with 2252) ---
+        function handleBypass1() {
+            const inputElement = document.getElementById('linkInput1');
+            const originalLink = inputElement.value;
+            
+            if (originalLink.trim() === "") {
+                alert("Please enter a link in Input 1.");
+                return;
+            }
+
+            const modifiedLink = modifyLink(originalLink, '2252'); 
+            
+            // Update the input box value with the modified link
+            inputElement.value = modifiedLink;
+        }
+
+        // --- Handler for Input Box 2 (Replace with 2256) ---
+        function handleBypass2() {
+            const inputElement = document.getElementById('linkInput2');
+            const originalLink = inputElement.value;
+            
+            if (originalLink.trim() === "") {
+                alert("Please enter a link in Input 2.");
+                return;
+            }
+
+            const modifiedLink = modifyLink(originalLink, '2256'); 
+            
+            // Update the input box value with the modified link
+            inputElement.value = modifiedLink;
+        }
+    </script>
+
+</body>
+</html>
