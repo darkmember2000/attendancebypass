@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic URL Modifier Tool (Automatic)</title>
+    <title>Dynamic URL Modifier Tool (2251-2270)</title>
     <style>
         /* Basic Styles */
         body {
@@ -13,7 +13,7 @@
             color: #333;
         }
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: auto;
             background: #fff;
             padding: 30px;
@@ -104,9 +104,9 @@
 <body>
 
     <div class="container">
-        <h1>🔗 Automatic URL Modifier Tool</h1>
+        <h1>🔗 Automatic URL Modifier Tool (2251 - 2270)</h1>
         <div class="description">
-            <p>Paste the original URL into the **Master Input Box**. All boxes below will **automatically** modify the link to their target number.</p>
+            <p>Paste the original URL into the **Master Input Box**. The result boxes below, from **2251 to 2270**, will automatically update with the modified link.</p>
         </div>
 
         <div id="masterInputGroup">
@@ -116,8 +116,8 @@
 
         <div class="input-row" id="resultContainer">
             <script>
-                // Loop runs from 2251 to 2260 (10 total inputs)
-                for (let i = 2251; i <= 2260; i++) {
+                // Loop runs from 2251 to 2270 (20 total inputs)
+                for (let i = 2251; i <= 2270; i++) {
                     const inputId = `linkInput${i}`;
                     const targetDigits = String(i);
 
@@ -144,7 +144,7 @@
             const regex = /\d{4}_/; 
             
             if (originalLink.trim() === "") {
-                return ""; // Return empty if master input is empty
+                return "";
             }
 
             if (regex.test(originalLink)) {
@@ -159,8 +159,8 @@
             const masterInput = document.getElementById('masterLinkInput');
             const originalLink = masterInput.value.trim();
 
-            // Loop through all target digits from 2251 to 2260
-            for (let i = 2251; i <= 2260; i++) {
+            // Loop through all target digits from 2251 to 2270
+            for (let i = 2251; i <= 2270; i++) {
                 const inputId = `linkInput${i}`;
                 const targetDigits = String(i);
                 const inputElement = document.getElementById(inputId);
@@ -171,16 +171,17 @@
                 // Update the value
                 inputElement.value = modifiedLink;
                 
-                // Update styling based on result
+                // Update styling based on result or empty state
                 if (modifiedLink.startsWith("Error")) {
                     inputElement.style.backgroundColor = '#fdd';
                     inputElement.style.color = '#a00';
                     inputElement.placeholder = modifiedLink;
-                    inputElement.value = modifiedLink; // Set error text as value
+                    inputElement.value = modifiedLink;
                 } else if (modifiedLink === "") {
                     inputElement.style.backgroundColor = '#f9f9f9';
                     inputElement.style.color = '#333';
                     inputElement.placeholder = "Modified link will appear here";
+                    inputElement.value = "";
                 } else {
                     inputElement.style.backgroundColor = '#f9f9f9';
                     inputElement.style.color = '#333';
