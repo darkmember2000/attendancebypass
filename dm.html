@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic URL Modifier Tool (2251-2270)</title>
+    <title>Dynamic URL Modifier Tool (2240-2270)</title>
     <style>
         /* Basic Styles */
         body {
@@ -13,7 +13,7 @@
             color: #333;
         }
         .container {
-            max-width: 950px;
+            max-width: 1000px; /* Wider to accommodate more items */
             margin: auto;
             background: #fff;
             padding: 30px;
@@ -35,11 +35,11 @@
             border-radius: 4px;
         }
         
-        /* Grid Layout for result boxes */
+        /* Grid Layout for result boxes - 3 columns for better fit */
         .input-row {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Two columns per row */
-            gap: 20px;
+            grid-template-columns: 1fr 1fr 1fr; /* Three columns per row */
+            gap: 15px;
             margin-bottom: 20px;
         }
         .input-section {
@@ -60,15 +60,15 @@
             border: 1px solid #ccc;
             border-right: none;
             border-radius: 4px 0 0 4px;
-            font-size: 16px;
+            font-size: 14px; /* Slightly smaller font for more space */
             background-color: #f9f9f9; 
         }
         button {
-            padding: 10px 15px;
+            padding: 10px 12px; /* Smaller padding for more space */
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             transition: background-color 0.3s;
             margin-left: -1px;
         }
@@ -104,9 +104,9 @@
 <body>
 
     <div class="container">
-        <h1>🔗 Automatic URL Modifier Tool (2251 - 2270)</h1>
+        <h1>🔗 Automatic URL Modifier Tool (2240 - 2270)</h1>
         <div class="description">
-            <p>Paste the original URL into the **Master Input Box**. The result boxes below, from **2251 to 2270**, will automatically update with the modified link.</p>
+            <p>Paste the original URL into the **Master Input Box**. The result boxes below, from **2240 to 2270**, will automatically update with the modified link.</p>
         </div>
 
         <div id="masterInputGroup">
@@ -116,8 +116,8 @@
 
         <div class="input-row" id="resultContainer">
             <script>
-                // Loop runs from 2251 to 2270 (20 total inputs)
-                for (let i = 2251; i <= 2270; i++) {
+                // Loop runs from 2240 to 2270 (31 total inputs)
+                for (let i = 2240; i <= 2270; i++) {
                     const inputId = `linkInput${i}`;
                     const targetDigits = String(i);
 
@@ -159,8 +159,8 @@
             const masterInput = document.getElementById('masterLinkInput');
             const originalLink = masterInput.value.trim();
 
-            // Loop through all target digits from 2251 to 2270
-            for (let i = 2251; i <= 2270; i++) {
+            // Loop through all target digits from 2240 to 2270
+            for (let i = 2240; i <= 2270; i++) {
                 const inputId = `linkInput${i}`;
                 const targetDigits = String(i);
                 const inputElement = document.getElementById(inputId);
