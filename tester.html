@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ගතික URL වෙනස් කිරීමේ මෙවලම (2251-2260)</title>
+    <title>Dynamic URL Modifier Tool (2251-2260)</title>
     <style>
-        /* මූලික Styles */
+        /* Basic Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -20,10 +20,10 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        /* ආදාන කොටු යුගල වශයෙන් තැබීම සඳහා Grid Layout */
+        /* Grid Layout for two columns */
         .input-row {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* එක් පේළියක කොටු දෙකක් */
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -95,25 +95,25 @@
 <body>
 
     <div class="container">
-        <h1>🔗 URL වෙනස් කිරීමේ සහ විවෘත කිරීමේ මෙවලම (2251 - 2260)</h1>
+        <h1>🔗 Dynamic URL Modifier Tool (2251 - 2260)</h1>
         <div class="description">
-            <p>URL එක ඇතුළු කරන්න (උදා: `...id=**5060**_65421`). **Bypass** ඔබා **යටි ඉරට පෙර ඇති ඉලක්කම් 4** අදාළ අංකයෙන් ප්‍රතිස්ථාපනය කරන්න.</p>
-            <p>**Copy** මගින් link එක පිටපත් කරන්න, **Open** මගින් නව tab එකක link එක විවෘත කරන්න.</p>
+            <p>Enter a URL (e.g., `...id=**5060**_65421`). Click **Bypass** to replace the **4 digits before the underscore** with the target number.</p>
+            <p>Use **Copy** to save the link, or **Open** to launch the modified link in a new tab.</p>
         </div>
 
         <div class="input-row">
             <script>
-                // 2251 සිට 2260 දක්වා loop එකක් ක්‍රියාත්මක කරයි (මුළු කොටු 10ක්)
+                // Loop runs from 2251 to 2260 (10 total inputs)
                 for (let i = 2251; i <= 2260; i++) {
                     const inputId = `linkInput${i}`;
                     const targetDigits = String(i);
 
-                    // එක් එක් ආදාන කොටුව සඳහා HTML එක ලියයි
+                    // Write HTML structure for each input section
                     document.write(`
                         <div class="input-section">
-                            <h3>ඉලක්කය: ${targetDigits}</h3>
+                            <h3>Target: ${targetDigits}</h3>
                             <div class="input-group">
-                                <input type="text" id="${inputId}" placeholder="ඔබේ link එක මෙහි අලවන්න">
+                                <input type="text" id="${inputId}" placeholder="Paste your link here">
                                 <button class="bypass-btn" onclick="handleBypass('${inputId}', '${targetDigits}')">Bypass</button>
                                 <button class="copy-btn" onclick="copyLink('${inputId}')">Copy 📋</button>
                                 <button class="open-btn" onclick="openLink('${inputId}')">Open 🌐</button>
@@ -124,31 +124,31 @@
             </script>
         </div>
 
-        <p style="text-align: center; color: #6c757d; margin-top: 20px;">පළමුව 'Bypass' බොත්තම ඔබා link එක වෙනස් කරගන්න.</p>
+        <p style="text-align: center; color: #6c757d; margin-top: 20px;">Use the 'Bypass' button first to modify the link before copying or opening.</p>
 
     </div>
 
     <script>
-        // රටාව සොයා ඉලක්කම් ප්‍රතිස්ථාපනය කරන ප්‍රධාන කාර්යය
+        // Core function to find the pattern and replace the digits
         function modifyLink(originalLink, newDigits) {
-            // Regex: යටි ඉරට (_) පෙර ඇති ඉලක්කම් 4 (\d{4}) සොයයි
+            // Regex: Find exactly 4 digits (\d{4}) followed by an underscore (_)
             const regex = /\d{4}_/; 
             
             if (originalLink.trim() === "") {
-                alert("කරුණාකර පළමුව link එකක් ඇතුළු කරන්න.");
+                alert("Please enter a link first.");
                 return originalLink;
             }
 
             if (regex.test(originalLink)) {
-                // සොයාගත් "XXXX_" කොටස නව ඉලක්කම් සහ යටි ඉර සමඟ ප්‍රතිස්ථාපනය කරයි
+                // Replace the found "XXXX_" with the new digits and an underscore
                 return originalLink.replace(regex, newDigits + '_');
             } else {
-                alert(`දෝෂය: Link එකේ අපේක්ෂිත රටාව (යටි ඉරට පෙර ඉලක්කම් 4) අඩංගු නොවේ, උදා: '5060_'. Link එක වෙනස් කර නැත.`);
+                alert(`Error: Link must contain 4 digits followed by an underscore, e.g., '5060_'. Link was not modified.`);
                 return originalLink; 
             }
         }
 
-        // --- සියලුම Bypass බොත්තම් සඳහා පොදු Handler එක ---
+        // --- Single Reusable Handler for ALL Bypass Buttons ---
         function handleBypass(inputId, targetDigits) {
             const inputElement = document.getElementById(inputId);
             const originalLink = inputElement.value;
@@ -157,26 +157,26 @@
             inputElement.value = modifiedLink;
         }
 
-        // --- නව tab එකක link එක විවෘත කිරීමේ කාර්යය ---
+        // --- Function to Open Link in New Tab ---
         function openLink(inputId) {
             const inputElement = document.getElementById(inputId);
             const link = inputElement.value.trim();
 
             if (link === "") {
-                alert("Link කොටුව හිස්ය. පළමුව link එකක් වෙනස් කරන්න.");
+                alert("The link box is empty. Please modify a link first.");
                 return;
             }
 
-            // නව tab එකක URL එක විවෘත කරයි
+            // Open the URL in a new tab
             window.open(link, '_blank');
         }
         
-        // --- සියලුම Copy බොත්තම් සඳහා පොදු Copy Function එක ---
+        // --- Single Reusable Copy Function ---
         function copyLink(inputId) {
             const inputElement = document.getElementById(inputId);
             
             if (inputElement.value.trim() === "") {
-                alert("Link කොටුව හිස්ය. Bypass බොත්තම භාවිතා කර link එකක් වෙනස් කරන්න.");
+                alert("The link box is empty. Please use the Bypass button to modify a link first.");
                 return;
             }
             
@@ -184,7 +184,7 @@
             inputElement.setSelectionRange(0, 99999); 
             
             navigator.clipboard.writeText(inputElement.value).then(() => {
-                // පරිශීලකයාට තහවුරු කිරීමක් පෙන්වයි
+                // Show a temporary confirmation
                 const copyBtn = document.querySelector(`#${inputId} + .bypass-btn + .copy-btn`);
                 const originalText = copyBtn.innerHTML;
                 copyBtn.innerHTML = 'Copied!';
@@ -195,7 +195,7 @@
                 }, 1000);
 
             }).catch(err => {
-                alert("Link එක පිටපත් කිරීමට නොහැකි විය.");
+                alert("Could not copy link. Check browser permissions.");
             });
         }
     </script>
