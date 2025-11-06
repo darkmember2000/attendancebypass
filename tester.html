@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Modifier & Opener Tool</title>
+    <style>
+        /* Basic Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 750px; /* Slightly wider to fit all buttons */
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: stretch;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 15px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-left: -1px;
+        }
+        .bypass-btn {
+            background-color: #007bff;
+            border-radius: 0;
+        }
+        .bypass-btn:hover {
+            background-color: #0056b3;
+        }
+        .copy-btn {
+            background-color: #28a745;
+            border-radius: 0; /* Keep it square */
+        }
+        .copy-btn:hover {
+            background-color: #1e7e34;
+        }
+        .open-btn {
+            background-color: #ffc107; /* Yellow/Orange color */
+            color: #333;
+            border-radius: 0 4px 4px 0; /* Rightmost button gets the end radius */
+        }
+        .open-btn:hover {
+            background-color: #e0a800;
+        }
+        .description {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-left: 5px solid #007bff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔗 URL Modifier & Opener Tool</h1>
+        <div class="description">
+            <p>Enter a URL (e.g., `...id=**5060**_65421`). Click **Bypass** to modify it.</p>
+            <p>Use **Copy** to save the link, or **Open** to launch the modified link in a new tab.</p>
+        </div>
+
+        <h3>Input 1: Target 2252</h3>
+        <div class="input-group">
+            <input type="text" id="linkInput1" placeholder="Paste your link here (e.g., ...id=5060_65421)">
+            <button class="bypass-btn" onclick="handleBypass1()">Bypass</button>
+            <button class="copy-btn" onclick="copyLink('linkInput1')">Copy 📋</button>
+            <button class="open-btn" onclick="openLink('linkInput1')">Open 🌐</button>
+        </div>
+
+        <h3>Input 2: Target 2256</h3>
+        <div class="input-group">
+            <input type="text" id="linkInput2" placeholder="Paste your link here (e.g., ...id=5060_65421)">
+            <button class="bypass-btn" onclick="handleBypass2()">Bypass</button>
+            <button class="copy-btn" onclick="copyLink('linkInput2')">Copy 📋</button>
+            <button class="open-btn" onclick="openLink('linkInput2')">Open 🌐</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Core function to find the pattern and replace the digits
+        function modifyLink(originalLink, newDigits) {
+            // Regex: Find exactly 4 digits (\d{4}) followed by an underscore (_)
+            const regex = /\d{4}_/; 
+            
+            if (regex.test(originalLink)) {
+                return originalLink.replace(regex, newDigits + '_');
+            } else {
+                alert("Error: The link does not contain the expected pattern (4 digits followed by an underscore).");
+                return originalLink; 
+            }
+        }
+
+        // --- Handlers for Bypass (Modify) ---
+        function handleBypass1() {
+            const inputElement = document.getElementById('linkInput1');
+            const originalLink = inputElement.value;
+            if (originalLink.trim() === "") { alert("Please enter a link first."); return; }
+            inputElement.value = modifyLink(originalLink, '2252'); 
+        }
+
+        function handleBypass2() {
+            const inputElement = document.getElementById('linkInput2');
+            const originalLink = inputElement.value;
+            if (originalLink.trim() === "") { alert("Please enter a link first."); return; }
+            inputElement.value = modifyLink(originalLink, '2256'); 
+        }
+
+        // --- Function to Open Link in New Tab (NEW) ---
+        function openLink(inputId) {
+            const inputElement = document.getElementById(inputId);
+            const link = inputElement.value.trim();
+
+            if (link === "") {
+                alert("The link box is empty. Please modify a link first.");
+                return;
+            }
+
+            // Open the URL in a new tab
+            window.open(link, '_blank');
+        }
+
+        // --- Copy Function ---
+        function copyLink(inputId) {
+            const inputElement = document.getElementById(inputId);
+            
+            if (inputElement.value.trim() === "") {
+                alert("The link box is empty. Please modify a link first.");
+                return;
+            }
+            
+            inputElement.select();
+            inputElement.setSelectionRange(0, 99999); 
+            
+            navigator.clipboard.writeText(inputElement.value).then(() => {
+                // Show a temporary confirmation
+                const copyBtn = document.querySelector(`#${inputId} + .bypass-btn + .copy-btn`);
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    inputElement.setSelectionRange(0, 0); 
+                    inputElement.blur();
+                }, 1000);
+
+            }).catch(err => {
+                alert("Could not copy link. Check browser permissions.");
+            });
+        }
+    </script>
+
+</body>
+</html>
