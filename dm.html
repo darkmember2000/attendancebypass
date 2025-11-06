@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic URL Modifier Tool (Automatic)</title>
+    <style>
+        /* Basic Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* Master Input Box Style */
+        #masterInputGroup {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 6px;
+        }
+        #masterLinkInput {
+            width: 100%;
+            padding: 12px;
+            font-size: 17px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        /* Grid Layout for result boxes */
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two columns per row */
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .input-group {
+            display: flex;
+            align-items: stretch;
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+            background-color: #f9f9f9; 
+        }
+        button {
+            padding: 10px 15px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-left: -1px;
+        }
+        .copy-btn {
+            background-color: #28a745;
+            border-radius: 0;
+        }
+        .copy-btn:hover {
+            background-color: #1e7e34;
+        }
+        .open-btn {
+            background-color: #ffc107;
+            color: #333;
+            border-radius: 0 4px 4px 0;
+        }
+        .open-btn:hover {
+            background-color: #e0a800;
+        }
+        .description {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-left: 5px solid #007bff;
+            border-radius: 4px;
+        }
+        h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔗 Automatic URL Modifier Tool</h1>
+        <div class="description">
+            <p>Paste the original URL into the **Master Input Box**. All boxes below will **automatically** modify the link to their target number.</p>
+        </div>
+
+        <div id="masterInputGroup">
+            <h2>Master Link:</h2>
+            <input type="text" id="masterLinkInput" placeholder="Paste the original link here (e.g., ...id=5060_65421)" onkeyup="processAllLinks()">
+        </div>
+
+        <div class="input-row" id="resultContainer">
+            <script>
+                // Loop runs from 2251 to 2260 (10 total inputs)
+                for (let i = 2251; i <= 2260; i++) {
+                    const inputId = `linkInput${i}`;
+                    const targetDigits = String(i);
+
+                    // Write HTML structure for each result section
+                    document.write(`
+                        <div class="input-section">
+                            <h3>Target: ${targetDigits}</h3>
+                            <div class="input-group">
+                                <input type="text" id="${inputId}" value="" readonly placeholder="Modified link will appear here">
+                                <button class="copy-btn" onclick="copyLink('${inputId}')">Copy 📋</button>
+                                <button class="open-btn" onclick="openLink('${inputId}')">Open 🌐</button>
+                            </div>
+                        </div>
+                    `);
+                }
+            </script>
+        </div>
+    </div>
+
+    <script>
+        // Core function to find the pattern and replace the digits
+        function modifyLink(originalLink, newDigits) {
+            // Regex: Find exactly 4 digits (\d{4}) followed by an underscore (_)
+            const regex = /\d{4}_/; 
+            
+            if (originalLink.trim() === "") {
+                return ""; // Return empty if master input is empty
+            }
+
+            if (regex.test(originalLink)) {
+                return originalLink.replace(regex, newDigits + '_');
+            } else {
+                return "Error: Invalid Link Format";
+            }
+        }
+
+        // --- Function to Automatically Process All Result Boxes ---
+        function processAllLinks() {
+            const masterInput = document.getElementById('masterLinkInput');
+            const originalLink = masterInput.value.trim();
+
+            // Loop through all target digits from 2251 to 2260
+            for (let i = 2251; i <= 2260; i++) {
+                const inputId = `linkInput${i}`;
+                const targetDigits = String(i);
+                const inputElement = document.getElementById(inputId);
+
+                // Modify the link
+                const modifiedLink = modifyLink(originalLink, targetDigits);
+                
+                // Update the value
+                inputElement.value = modifiedLink;
+                
+                // Update styling based on result
+                if (modifiedLink.startsWith("Error")) {
+                    inputElement.style.backgroundColor = '#fdd';
+                    inputElement.style.color = '#a00';
+                    inputElement.placeholder = modifiedLink;
+                    inputElement.value = modifiedLink; // Set error text as value
+                } else if (modifiedLink === "") {
+                    inputElement.style.backgroundColor = '#f9f9f9';
+                    inputElement.style.color = '#333';
+                    inputElement.placeholder = "Modified link will appear here";
+                } else {
+                    inputElement.style.backgroundColor = '#f9f9f9';
+                    inputElement.style.color = '#333';
+                }
+            }
+        }
+
+        // --- Function to Open Link in New Tab ---
+        function openLink(inputId) {
+            const inputElement = document.getElementById(inputId);
+            const link = inputElement.value.trim();
+
+            if (link === "" || link.startsWith("Error")) {
+                alert("Cannot open link. Please ensure the link is valid.");
+                return;
+            }
+
+            window.open(link, '_blank');
+        }
+        
+        // --- Copy Function ---
+        function copyLink(inputId) {
+            const inputElement = document.getElementById(inputId);
+            
+            if (inputElement.value.trim() === "" || inputElement.value.startsWith("Error")) {
+                alert("Cannot copy link. Box is empty or contains an error.");
+                return;
+            }
+            
+            inputElement.select();
+            inputElement.setSelectionRange(0, 99999); 
+            
+            navigator.clipboard.writeText(inputElement.value).then(() => {
+                // Show a temporary confirmation
+                const copyBtn = document.querySelector(`#${inputId} + .copy-btn`);
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    inputElement.setSelectionRange(0, 0); 
+                    inputElement.blur();
+                }, 1000);
+
+            }).catch(err => {
+                alert("Could not copy link. Check browser permissions.");
+            });
+        }
+    </script>
+
+</body>
+</html>
