@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Bypass Tool</title>
+    <title>URL Bypass and Copy Tool</title>
     <style>
         /* Basic Styling for better appearance */
         body {
@@ -13,7 +13,7 @@
             color: #333;
         }
         .container {
-            max-width: 600px;
+            max-width: 700px;
             margin: auto;
             background: #fff;
             padding: 30px;
@@ -23,27 +23,38 @@
         .input-group {
             display: flex;
             margin-bottom: 20px;
-            align-items: center;
+            align-items: stretch; /* Align items to fill height */
         }
         input[type="text"] {
             flex-grow: 1;
             padding: 10px;
             border: 1px solid #ccc;
+            border-right: none; /* Make input look connected to buttons */
             border-radius: 4px 0 0 4px;
             font-size: 16px;
         }
         button {
             padding: 10px 15px;
-            background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
-            border-radius: 0 4px 4px 0;
             font-size: 16px;
             transition: background-color 0.3s;
+            margin-left: -1px; /* Overlap borders */
         }
-        button:hover {
+        .bypass-btn {
+            background-color: #007bff;
+            border-radius: 0;
+        }
+        .bypass-btn:hover {
             background-color: #0056b3;
+        }
+        .copy-btn {
+            background-color: #28a745;
+            border-radius: 0 4px 4px 0; /* Only rightmost button gets the end radius */
+        }
+        .copy-btn:hover {
+            background-color: #1e7e34;
         }
         .description {
             margin-bottom: 25px;
@@ -57,25 +68,27 @@
 <body>
 
     <div class="container">
-        <h1>🔗 URL Modifier Tool</h1>
+        <h1>🔗 URL Modifier and Copy Tool</h1>
         <div class="description">
-            <p>Enter a URL. Clicking **Bypass** will replace the **4 digits before the underscore** with a specific number.</p>
-            <p>Example: <code>.../id=**5060**_65421</code> will change to <code>.../id=**2252**_65421</code> or <code>.../id=**2256**_65421</code>.</p>
+            <p>Enter a URL. Click **Bypass** to replace the **4 digits before the underscore**.</p>
+            <p>Use the **Copy** button to quickly copy the modified link to your clipboard.</p>
         </div>
 
         <h3>Input 1: Replace with 2252</h3>
         <div class="input-group">
-            <input type="text" id="linkInput1" placeholder="Paste your link here (e.g., https://...id=5060_65421)">
-            <button onclick="handleBypass1()">Bypass</button>
+            <input type="text" id="linkInput1" placeholder="Paste your link here (e.g., ...id=5060_65421)">
+            <button class="bypass-btn" onclick="handleBypass1()">Bypass</button>
+            <button class="copy-btn" onclick="copyLink('linkInput1')">Copy 📋</button>
         </div>
 
         <h3>Input 2: Replace with 2256</h3>
         <div class="input-group">
-            <input type="text" id="linkInput2" placeholder="Paste your link here (e.g., https://...id=5060_65421)">
-            <button onclick="handleBypass2()">Bypass</button>
+            <input type="text" id="linkInput2" placeholder="Paste your link here (e.g., ...id=5060_65421)">
+            <button class="bypass-btn" onclick="handleBypass2()">Bypass</button>
+            <button class="copy-btn" onclick="copyLink('linkInput2')">Copy 📋</button>
         </div>
 
-        <p style="text-align: center; color: #6c757d;">Modified link appears in the text box after clicking Bypass.</p>
+        <p style="text-align: center; color: #6c757d;">Make sure to click 'Bypass' first to modify the link before copying.</p>
 
     </div>
 
@@ -85,12 +98,10 @@
             // Regex: Find exactly 4 digits (\d{4}) followed by an underscore (_)
             const regex = /\d{4}_/; 
             
-            // Check if the pattern is found (optional, but good practice)
             if (regex.test(originalLink)) {
                 // Replace the found "XXXX_" with the new digits and an underscore
                 return originalLink.replace(regex, newDigits + '_');
             } else {
-                // Alert the user if the pattern is not found
                 alert("Error: The link doesn't contain the expected pattern (4 digits followed by an underscore).");
                 return originalLink; 
             }
@@ -107,8 +118,6 @@
             }
 
             const modifiedLink = modifyLink(originalLink, '2252'); 
-            
-            // Update the input box value with the modified link
             inputElement.value = modifiedLink;
         }
 
@@ -123,9 +132,30 @@
             }
 
             const modifiedLink = modifyLink(originalLink, '2256'); 
-            
-            // Update the input box value with the modified link
             inputElement.value = modifiedLink;
+        }
+
+        // --- New Copy Function ---
+        function copyLink(inputId) {
+            const inputElement = document.getElementById(inputId);
+            
+            // 1. Check if the input is empty
+            if (inputElement.value.trim() === "") {
+                alert("The link box is empty. Please enter and bypass a link first.");
+                return;
+            }
+            
+            // 2. Select the text field content
+            inputElement.select();
+            inputElement.setSelectionRange(0, 99999); // For mobile devices
+            
+            // 3. Copy the text inside the text field
+            navigator.clipboard.writeText(inputElement.value).then(() => {
+                alert("Link copied to clipboard successfully!");
+            }).catch(err => {
+                // This handles older browsers or security restrictions
+                alert("Could not copy link: " + err);
+            });
         }
     </script>
 
